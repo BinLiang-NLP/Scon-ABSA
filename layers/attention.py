@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-# file: attention.py
-# author: songyouwei <youwei0314@gmail.com>
-# Copyright (C) 2018. All Rights Reserved.
-
 import math
 import torch
 import torch.nn as nn
