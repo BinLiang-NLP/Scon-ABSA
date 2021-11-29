@@ -1,7 +1,3 @@
-"""
-Author: Yonglong Tian (yonglong@mit.edu)
-Date: May 07, 2020
-"""
 from __future__ import print_function
 
 import torch
@@ -75,7 +71,6 @@ class SupConLoss(nn.Module):
             anchor_count = 1
         elif self.contrast_mode == 'all':
             anchor_feature = contrast_feature
-            # ?对比数目
             anchor_count = contrast_count
         else:
             raise ValueError('Unknown mode: {}'.format(self.contrast_mode))
@@ -86,9 +81,7 @@ class SupConLoss(nn.Module):
             self.temperature)
 
         # for numerical stability
-        # 数值稳定性
         logits_max, _ = torch.max(anchor_dot_contrast, dim=1, keepdim=True)
-        # 获得logits最大值
         logits = anchor_dot_contrast - logits_max.detach()
 
         logits_min, _ = torch.min(logits, dim=1, keepdim=True)
@@ -102,12 +95,12 @@ class SupConLoss(nn.Module):
 
         # mask-out self-contrast cases
         logits_mask = torch.scatter(
-            torch.ones_like(mask), #返回一个填充了标量值1的张量
+            torch.ones_like(mask), 
             1,
             torch.arange(batch_size * anchor_count).view(-1, 1).to(device),
             0
         )
-        # print("logits_mask",logits_mask)  #16*16 对角线
+        # print("logits_mask",logits_mask)  
         mask = mask * logits_mask
 
         exp_logits = torch.exp(logits) * logits_mask
