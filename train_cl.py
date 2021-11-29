@@ -302,8 +302,6 @@ class Instructor:
 
         test_data_loader = DataLoader(dataset=self.testset, batch_size=self.opt.batch_size, shuffle=False)
 
-        # 加载模型
-
         # self.model.load_state_dict(torch.load('./state_dict_save_bert_renew/model-file-name'))
         self.model.load_state_dict(torch.load('./state_dict_save_bert_renew/'+self.opt.testfname))
 
