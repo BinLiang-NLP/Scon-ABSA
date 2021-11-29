@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+# file: dynamic_rnn.py
+# author: songyouwei <youwei0314@gmail.com>
+# Copyright (C) 2018. All Rights Reserved.
+
+
 import math
 import torch
 import torch.nn as nn
