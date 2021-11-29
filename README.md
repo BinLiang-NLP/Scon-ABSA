@@ -1,6 +1,6 @@
 # Enhancing Aspect-Based Sentiment Analysis with Supervised Contrastive Learning.
 
-This repo contains the PyTorch implementaion for the paper *Enhancing Aspect-Based Sentiment Analysis with Supervised Contrastive Learning*.
+This repo contains the PyTorch code and implementation for the paper *Enhancing Aspect-Based Sentiment Analysis with Supervised Contrastive Learning*.
 
 [**Enhancing Aspect-Based Sentiment Analysis with Supervised Contrastive Learning**](https://dl.acm.org/doi/pdf/10.1145/3459637.3482096) 
 <br>
@@ -8,7 +8,7 @@ Bin Liang<sup>#</sup>, Wangda Luo<sup>#</sup>, Xiang Li, Lin Gui, Min Yang, Xiao
   
 Please cite our paper and kindly give a star for this repository if you use this code. 
 
-For any questions about the implementation, plaese email luowangda_hitsz@163.com or bin.liang@stu.hit.edu.cn.
+For any question, plaese email luowangda_hitsz@163.com or bin.liang@stu.hit.edu.cn.
 
 ### Model Overview
 ![model](./img/model_overview.png)
