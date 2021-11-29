@@ -119,5 +119,6 @@ or
 ```
 
 ### Credits
-The code of this repository partly relies on [ABSA-PyTorch](https://github.com/songyouwei/ABSA-PyTorch).
-I would like to express my gratitude to the authors of the [ABSA-PyTorch](https://github.com/songyouwei/ABSA-PyTorch) repository.
+* The code of this repository partly relies on [ABSA-PyTorch](https://github.com/songyouwei/ABSA-PyTorch).
+* We would like to express my gratitude to the authors of the [ABSA-PyTorch](https://github.com/songyouwei/ABSA-PyTorch) repository.
+* The Supervised Contrastive Loss devised in this paper is partly inspired by [Supervised Contrastive Learning (Khosla and Tian, et al.)](https://proceedings.neurips.cc/paper/2020/file/d89a66c7c80a29b1bdbab0f2a1a94af8-Paper.pdf), we would like to express my gratitude to the authors of this paper.
