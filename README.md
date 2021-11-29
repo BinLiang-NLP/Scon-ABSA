@@ -97,6 +97,25 @@ publisher = {Association for Computing Machinery},
 address = {New York, NY, USA},
 url = {https://doi.org/10.1145/3459637.3482096},
 doi = {10.1145/3459637.3482096},
+abstract = {Most existing aspect-based sentiment analysis (ABSA) research efforts are devoted to extracting the aspect-dependent sentiment features from the sentence towards the given aspect. However, it is observed that about 60% of the testing aspects in commonly used public datasets are unknown to the training set. That is, some sentiment features carry the same polarity regardless of the aspects they are associated with (aspect-invariant sentiment), which props up the high accuracy of existing ABSA models when inevitably inferring sentiment polarities for those unknown testing aspects. Therefore, in this paper, we revisit ABSA from a novel perspective by deploying a novel supervised contrastive learning framework to leverage the correlation and difference among different sentiment polarities and between different sentiment patterns (aspect-invariant/-dependent). This allows improving the sentiment prediction for (unknown) testing aspects in the light of distinguishing the roles of valuable sentiment features. Experimental results on 5 benchmark datasets show that our proposed approach substantially outperforms state-of-the-art baselines in ABSA. We further extend existing neural network-based ABSA models with our proposed framework and achieve improved performance.},
+booktitle = {Proceedings of the 30th ACM International Conference on Information &amp; Knowledge Management},
+pages = {3242–3247},
+numpages = {6},
+keywords = {sentiment analysis, contrastive learning, aspect sentiment analysis},
+location = {Virtual Event, Queensland, Australia},
+series = {CIKM '21}
+}
+```
+or
+
+```
+@inproceedings{liang2021enhancing,
+  title={Enhancing Aspect-Based Sentiment Analysis with Supervised Contrastive Learning},
+  author={Liang, Bin and Luo, Wangda and Li, Xiang and Gui, Lin and Yang, Min and Yu, Xiaoqi and Xu, Ruifeng},
+  booktitle={Proceedings of the 30th ACM International Conference on Information \& Knowledge Management},
+  pages={3242--3247},
+  year={2021}
+}
 ```
 
 ### Credits
