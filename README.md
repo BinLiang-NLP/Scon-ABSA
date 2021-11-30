@@ -79,10 +79,10 @@ CUDA_VISIBLE_DEVICES=3 \
   --type cl2X3
 
 ```
-For dataset,you can choose these dataset : "cl_acl2014_2X3" "cl_res2014_2X3" "cl_laptop2014_2X3" "cl_res2015_2X3" "cl_res2016_2X3" "cl_mams_2X3".
+For dataset implementation, you can choose these datasets: "cl_acl2014_2X3" "cl_res2014_2X3" "cl_laptop2014_2X3" "cl_res2015_2X3" "cl_res2016_2X3" "cl_mams_2X3".
 ### Testing
-```sh
-bash run_test.sh
+```bash
+./run_test.sh
 ```
 
 
