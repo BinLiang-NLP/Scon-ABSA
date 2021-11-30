@@ -64,8 +64,8 @@ c) The data defaults are in data_utils.py, which you can view if you want to cha
     --type: Select a task type.(normal,cl2,cl6,cl2X3)  
 2. Run the shell script to start the program.
 
-```sh
-bash run.sh
+```bash
+./run.sh
 ```
 For run.sh code:
 ```angular2
