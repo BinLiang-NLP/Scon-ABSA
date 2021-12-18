@@ -61,7 +61,7 @@ def Tsne_graph(fname,index):
         d = tsne.iloc[i]
 
         if label[i]=='0' and n1<200:
-                plt.scatter(d[0]*1/3, d[1]*1/3,c= 'r',marker='.')
+                plt.scatter(d[0]*1/3, d[1]*1/3,c= 'r',marker='.') #可调整坐标范围
                 n1+=1
         elif label[i]=='1' and n2<200:
             
