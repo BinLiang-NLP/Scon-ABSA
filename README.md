@@ -1,4 +1,4 @@
-# Enhancing Aspect-Based Sentiment Analysis with Supervised Contrastive Learning.
+# Enhancing Aspect-Based Sentiment Analysis with Supervised Contrastive Learning
 
 This repository contains the PyTorch code and implementation for the paper *Enhancing Aspect-Based Sentiment Analysis with Supervised Contrastive Learning*.
 
