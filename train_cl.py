@@ -371,7 +371,7 @@ def main():
     parser.add_argument('--embed_dim', default=300, type=int)
     parser.add_argument('--hidden_dim', default=300, type=int)
     parser.add_argument('--bert_dim', default=768, type=int)
-    parser.add_argument('--pretrained_bert_name', default='/home/luowangda/bertPretranmodel/bert-base-uncased', type=str)
+    parser.add_argument('--pretrained_bert_name', default='bert-base-uncased', type=str)
     parser.add_argument('--max_seq_len', default=85, type=int)
     parser.add_argument('--polarities_dim', default=3, type=int)
     parser.add_argument('--hops', default=3, type=int)
