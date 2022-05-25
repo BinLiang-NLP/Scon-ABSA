@@ -196,7 +196,7 @@ class Instructor:
                 if not os.path.exists('state_dict'):
                     os.mkdir('state_dict')
 
-                path = 'state_dict_save_bert_renew/{0}_{1}_val_type_{2}_acc_{3}'.format(self.opt.model_name, self.opt.dataset,self.opt.type, round(val_acc, 4))
+                path = 'state_dict/{0}_{1}_val_type_{2}_acc_{3}'.format(self.opt.model_name, self.opt.dataset,self.opt.type, round(val_acc, 4))
                 torch.save(self.model.state_dict(), path)
                 logger.info('>> saved: {}'.format(path))
 
@@ -559,6 +559,8 @@ def main():
         if opt.device is None else torch.device(opt.device)
 
     if opt.is_test==0:
+        if not os.path.exists('log'):
+            os.mkdir('log')
         log_file = './log/{}-{}-{}.log'.format(opt.model_name, opt.dataset, strftime("%y%m%d-%H%M", localtime()))
         logger.addHandler(logging.FileHandler(log_file))
 
