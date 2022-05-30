@@ -12,6 +12,7 @@ import numpy
 
 from losses import SupConLoss
 from infoNCE import InfoNCE
+from criterion import CL_auxiliary, CL_sentiment
 
 from sklearn import metrics
 from time import strftime, localtime
@@ -97,7 +98,7 @@ class Instructor:
                             stdv = 1. / math.sqrt(p.shape[0])
                             torch.nn.init.uniform_(p, a=-stdv, b=stdv)
 
-    def _train(self, criterion,contrastiveLoss,criterion2, optimizer, train_data_loader, val_data_loader):
+    def _train(self, criterion, contrastiveLoss_auxiliary, contrastiveLoss_sentiment, criterion2, optimizer, train_data_loader, val_data_loader):
         max_val_acc = 0
         max_val_acc_f1=0
 
@@ -140,11 +141,12 @@ class Instructor:
                     cllabel = batch['cllabel'].to(self.opt.device)
                     polabel = batch['polabel'].to(self.opt.device)
 
-                    loss2 = contrastiveLoss(outputs[1], cllabel)
+                    loss2 = contrastiveLoss_auxiliary(outputs[1], cllabel)
                     loss1 = criterion(outputs[0], targets)
-                    loss3 = contrastiveLoss(outputs[1], polabel)
+                    #loss3 = contrastiveLoss_sentiment(outputs[1],cllabel, polabel)
+                    loss3 = contrastiveLoss_sentiment(outputs[1], polabel)
                     # logger.info('loss: {:.4f}, loss1: {:.4f},loss2: {:.4f},loss3: {:.4f}'.format(train_loss,loss1,loss2,loss3))
-                    loss = loss1+loss2+loss3
+                    loss = loss1 + loss2 + 0 * loss3
 
                 # for contrastive learning for 6 label (2*3) , sentiment(0,1,2)* contrast-label(1:aspect-depencent,0:aspect-invariant)
                 elif "_cl_6" in self.opt.dataset_file['train'] or "_cl" in self.opt.dataset_file['train']:
@@ -152,7 +154,7 @@ class Instructor:
                     targets = batch['polarity'].to(self.opt.device)
                     cllabel = batch['cllabel'].to(self.opt.device)
 
-                    loss2 = contrastiveLoss(outputs[1], cllabel)
+                    loss2 = contrastiveLoss_auxiliary(outputs[1], cllabel)
                     loss1 = criterion(outputs[0], targets)
 
                     loss = loss1 + loss2
@@ -302,8 +304,7 @@ class Instructor:
 
         test_data_loader = DataLoader(dataset=self.testset, batch_size=self.opt.batch_size, shuffle=False)
 
-        # self.model.load_state_dict(torch.load('./state_dict_save_bert_renew/model-file-name'))
-        self.model.load_state_dict(torch.load('./state_dict_save_bert_renew/'+self.opt.testfname))
+        self.model.load_state_dict(torch.load('./state_dict/'+self.opt.testfname))
 
 
         test_acc, test_f1 = self._evaluate_acc_f1_Test(test_data_loader)
@@ -317,7 +318,8 @@ class Instructor:
         _params = filter(lambda p: p.requires_grad, self.model.parameters())
         criterion = nn.CrossEntropyLoss()
         criterion2 = nn.CrossEntropyLoss()
-        contrastiveLoss = SupConLoss()
+        contrastiveLoss_auxiliary = CL_auxiliary(self.opt)
+        contrastiveLoss_sentiment = CL_sentiment(self.opt)
         optimizer = self.opt.optimizer(_params, lr=self.opt.lr, weight_decay=self.opt.l2reg)
 
         train_data_loader = DataLoader(dataset=self.trainset, batch_size=self.opt.batch_size, shuffle=True)
@@ -325,7 +327,7 @@ class Instructor:
         val_data_loader = DataLoader(dataset=self.valset, batch_size=self.opt.batch_size, shuffle=False)
 
         self._reset_params()
-        best_model_path,max_val_acc,max_val_acc_f1,max_val_f1,max_val_f1_acc= self._train(criterion, contrastiveLoss,criterion2,optimizer, train_data_loader, val_data_loader)
+        best_model_path,max_val_acc,max_val_acc_f1,max_val_f1,max_val_f1_acc= self._train(criterion, contrastiveLoss_auxiliary, contrastiveLoss_sentiment, criterion2,optimizer, train_data_loader, val_data_loader)
 
         max_val_acc = round(max_val_acc, 4)
         max_val_acc_f1 = round(max_val_acc_f1, 4)
@@ -339,9 +341,11 @@ class Instructor:
 
         # save result
         #------------------------------------------
+        if not os.path.exists('save_result'):
+            os.mkdir('save_result')
         fname = str(self.opt.dataset_file['test'].split("/")[-2] + "_" + self.opt.dataset_file['test'].split("/")[
             -1]) + "_result_new" + str(self.opt.model_name) +"_"+str(self.opt.type)+ ".txt"
-        f = open("./save_result_renew/" + fname, "a+")
+        f = open("./save_result/" + fname, "a+")
 
         f.write(" Test： acc_MAX:" + str(max_val_acc) + " f1_MAX:" + str(max_val_f1) + " " + str(
             self.opt.model_name) + "_" + str(self.opt.dataset_file['train']) + "_seed" + str(self.opt.seed) +"_"+ str(
@@ -375,7 +379,7 @@ def main():
     parser.add_argument('--max_seq_len', default=85, type=int)
     parser.add_argument('--polarities_dim', default=3, type=int)
     parser.add_argument('--hops', default=3, type=int)
-    parser.add_argument('--patience', default=5, type=int)
+    parser.add_argument('--patience', default=10, type=int)
     parser.add_argument('--is_test', default=0, type=int)
     parser.add_argument('--type', default="normal", type=str)
     parser.add_argument('--device', default=None, type=str, help='e.g. cuda:0')
@@ -385,6 +389,9 @@ def main():
     parser.add_argument('--local_context_focus', default='cdm', type=str, help='local context focus mode, cdw or cdm')
     parser.add_argument('--SRD', default=3, type=int, help='semantic-relative-distance, see the paper of LCF-BERT model')
     parser.add_argument('--testfname', default=0, type=str)
+    parser.add_argument('--temperatureP', default=0.07, type=float)
+    parser.add_argument('--temperatureY', default=0.14, type=float)
+    parser.add_argument('--alpha', default=1, type=float,required=False)
     opt = parser.parse_args()
 
     if opt.seed is not None:
@@ -561,6 +568,7 @@ def main():
     if opt.is_test==0:
         if not os.path.exists('log'):
             os.mkdir('log')
+
         log_file = './log/{}-{}-{}.log'.format(opt.model_name, opt.dataset, strftime("%y%m%d-%H%M", localtime()))
         logger.addHandler(logging.FileHandler(log_file))
 
